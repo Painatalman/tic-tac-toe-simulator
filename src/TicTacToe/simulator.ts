@@ -2,9 +2,9 @@ import getRandomIntUpTo from "../utils/getRandomIntUpTo";
 import {
   Board,
   BoardPlay,
-  TicTacToeOptions,
   TicTacToeResults,
   Outcome,
+  BoardSpaceSymbol,
 } from "./types";
 import TicTacToeValidator from "./validator";
 
@@ -16,10 +16,10 @@ export default class TicTacToe {
   emptyChar: string;
   validator: TicTacToeValidator;
 
-  constructor(options?: TicTacToeOptions) {
-    this.player1Char = options?.player1Char || "x";
-    this.player2Char = options?.player2Char || "o";
-    this.emptyChar = options?.emptyChar || "_";
+  constructor() {
+    this.player1Char = BoardSpaceSymbol.PLAYER_1;
+    this.player2Char = BoardSpaceSymbol.PLAYER_2;
+    this.emptyChar = BoardSpaceSymbol.EMPTY;
     this.board = [
       [this.emptyChar, this.emptyChar, this.emptyChar],
       [this.emptyChar, this.emptyChar, this.emptyChar],
@@ -88,7 +88,7 @@ export default class TicTacToe {
   }
 
   play(): TicTacToeResults {
-    let isPlayer1 = true;
+    let isPlayer1 = getRandomIntUpTo(2) === 0 ? true : false;
 
     while (!this.hasGameEnded()) {
       this.makePlay(isPlayer1);
