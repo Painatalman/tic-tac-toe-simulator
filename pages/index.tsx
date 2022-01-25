@@ -56,6 +56,7 @@ const Home: NextPage<Props> = ({ initialResults = null }: Props) => {
           >
             Simulate
           </Button>
+          <Spacer y={2} />
           {isLoading ? (
             <Progress
               indeterminated
@@ -64,7 +65,7 @@ const Home: NextPage<Props> = ({ initialResults = null }: Props) => {
               status="secondary"
             ></Progress>
           ) : !gameData ? (
-            <Text>Press Simulate to play!</Text>
+            ""
           ) : (
             <TicTacToe winner={gameData.winner} plays={gameData.plays} />
           )}
