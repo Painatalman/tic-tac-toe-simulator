@@ -9,9 +9,13 @@ import createApiService from "@utils/createApiService";
 
 const service = createApiService();
 
-const Home: NextPage = () => {
+type Props = { initialResults: TicTacToeResults | null };
+
+const Home: NextPage<Props> = ({ initialResults = null }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [gameData, setGameData] = useState<TicTacToeResults | null>(null);
+  const [gameData, setGameData] = useState<TicTacToeResults | null>(
+    initialResults
+  );
 
   return (
     <>
@@ -69,5 +73,15 @@ const Home: NextPage = () => {
     </>
   );
 };
+
+export async function getServerSideProps() {
+  const data = await service.getRandomGame();
+
+  return {
+    props: {
+      initialResults: data,
+    },
+  };
+}
 
 export default Home;
