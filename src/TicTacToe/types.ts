@@ -28,3 +28,17 @@ export enum BoardSpaceSymbol {
   PLAYER_1 = "1",
   PLAYER_2 = "2",
 }
+
+type BoardPosition = {
+  line: number;
+  column: number;
+};
+
+type TicTacToeStrategyOptions = {
+  board?: Board;
+  player?: BoardSpaceSymbol.PLAYER_2 | BoardSpaceSymbol.PLAYER_2;
+};
+
+export interface TicTacToeStrategy {
+  getPlay(options: TicTacToeStrategyOptions): BoardPosition;
+}

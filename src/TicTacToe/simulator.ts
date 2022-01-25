@@ -5,6 +5,7 @@ import {
   TicTacToeResults,
   Outcome,
   BoardSpaceSymbol,
+  TicTacToeStrategy,
 } from "./types";
 import TicTacToeValidator from "./validator";
 
@@ -15,10 +16,20 @@ export default class TicTacToe {
   player2Char: string;
   emptyChar: string;
   validator: TicTacToeValidator;
+  player1Strategy: TicTacToeStrategy;
+  player2Strategy: TicTacToeStrategy;
 
-  constructor() {
+  constructor({
+    player1Strategy,
+    player2Strategy,
+  }: {
+    player1Strategy: TicTacToeStrategy;
+    player2Strategy: TicTacToeStrategy;
+  }) {
     this.player1Char = BoardSpaceSymbol.PLAYER_1;
+    this.player1Strategy = player1Strategy;
     this.player2Char = BoardSpaceSymbol.PLAYER_2;
+    this.player2Strategy = player2Strategy;
     this.emptyChar = BoardSpaceSymbol.EMPTY;
     this.board = [
       [this.emptyChar, this.emptyChar, this.emptyChar],
@@ -37,23 +48,13 @@ export default class TicTacToe {
     return isPlayerOne ? this.player1Char : this.player2Char;
   }
 
-  private getValidPosition() {
-    let line = getRandomIntUpTo(3);
-    let col = getRandomIntUpTo(3);
-
-    while (this.board[line][col] !== this.emptyChar) {
-      line = getRandomIntUpTo(3);
-      col = getRandomIntUpTo(3);
-    }
-
-    return [line, col];
-  }
-
   private makePlay(isPlayerOne: boolean) {
     const character = this.getPlayerCharacter(isPlayerOne);
-    const [line, col] = this.getValidPosition();
+    const { line, column } = isPlayerOne
+      ? this.player1Strategy.getPlay({ board: this.board })
+      : this.player2Strategy.getPlay({ board: this.board });
 
-    this.board[line][col] = character;
+    this.board[line][column] = character;
     this.registerPlay();
   }
 
